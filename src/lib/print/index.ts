@@ -49,10 +49,7 @@ function printNode(node: Node): string {
             if (node.computed) {
                 parts.push(']');
             }
-            if (
-                node.value.type !== 'Identifier' ||
-                node.key.name !== node.value.name
-            ) {
+            if (!node.shorthand) {
                 parts.push(':');
                 parts.push(printNode(node.value));
             }
