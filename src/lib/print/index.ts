@@ -12,14 +12,12 @@ function printFunctionParameters(
     parts: string[],
 ): void {
     parts.push('(');
-
     for (let i = 0; i < params.length; i++) {
         const prop = params[i];
         const shouldPrintCommma = i !== params.length - 1;
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         parts.push(printNode(prop) + (shouldPrintCommma ? ',' : ''));
     }
-
     parts.push(')');
 }
 
@@ -81,27 +79,20 @@ function printNode(node: Node): string {
         case 'FunctionExpression':
         case 'FunctionDeclaration': {
             parts.push('(');
-
             if (node.async) {
                 parts.push('async ');
             }
-
             parts.push('function');
-
             if (node.generator) {
                 parts.push('* ');
             } else {
                 parts.push(' ');
             }
-
             if (node.id) {
                 parts.push(printNode(node.id));
             }
-
             printFunctionParameters(node.params, parts);
-
             parts.push(printNode(node.body));
-
             parts.push(')');
             break;
         }
@@ -116,29 +107,21 @@ function printNode(node: Node): string {
             if (node.kind !== 'method') {
                 parts.push(node.kind + ' ');
             }
-
             if (node.async) {
                 parts.push('async' + (node.generator ? '' : ' '));
             }
-
             if (node.generator) {
                 parts.push('*');
             }
-
             if (node.computed) {
                 parts.push('[');
             }
-
             parts.push(printNode(node.key));
-
             if (node.computed) {
                 parts.push(']');
             }
-
             printFunctionParameters(node.params, parts);
-
             parts.push(printNode(node.body));
-
             break;
         }
         case 'LogicalExpression':
