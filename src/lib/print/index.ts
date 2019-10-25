@@ -1,4 +1,27 @@
-import { Statement, Node } from '@babel/types';
+import {
+    Statement,
+    Node,
+    Pattern,
+    Identifier,
+    RestElement,
+    TSParameterProperty,
+} from '@babel/types';
+
+function printFunctionParameters(
+    params: Array<Identifier | Pattern | RestElement | TSParameterProperty>,
+    parts: string[],
+): void {
+    parts.push('(');
+
+    for (let i = 0; i < params.length; i++) {
+        const prop = params[i];
+        const shouldPrintCommma = i !== params.length - 1;
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        parts.push(printNode(prop) + (shouldPrintCommma ? ',' : ''));
+    }
+
+    parts.push(')');
+}
 
 function printNode(node: Node): string {
     const parts: string[] = [];
@@ -75,15 +98,7 @@ function printNode(node: Node): string {
                 parts.push(printNode(node.id));
             }
 
-            parts.push('(');
-
-            for (let i = 0; i < node.params.length; i++) {
-                const prop = node.params[i];
-                const shouldPrintCommma = i !== node.params.length - 1;
-                parts.push(printNode(prop) + (shouldPrintCommma ? ',' : ''));
-            }
-
-            parts.push(')');
+            printFunctionParameters(node.params, parts);
 
             parts.push(printNode(node.body));
 
@@ -95,6 +110,32 @@ function printNode(node: Node): string {
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             parts.push(print(node.body));
             parts.push('}');
+            break;
+        }
+        case 'ObjectMethod': {
+            if (node.kind !== 'method') {
+                parts.push(node.kind + ' ');
+            }
+
+            if (node.async) {
+                parts.push('async' + (node.generator ? '' : ' '));
+            }
+
+            if (node.generator) {
+                parts.push('*');
+            }
+
+            if (node.computed) {
+                parts.push('[');
+            }
+
+            parts.push(printNode(node.key));
+
+            if (node.computed) {
+                parts.push(']');
+            }
+
+            printFunctionParameters(node.params, parts);
             break;
         }
         case 'LogicalExpression':
