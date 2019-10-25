@@ -1,0 +1,39 @@
+{
+    "name": "ccccc",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Sosuke Suzuki <aosukeke@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "lint": "eslint . --ext ts",
+        "format": "prettier --write \"**/*.{js,ts,tsx,md,json,yaml,html}\"",
+        "build": "tsc",
+        "build:watch": "yarn build --watch"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{ts}": [
+            "eslint --fix",
+            "git add"
+        ],
+        "*.{md,json}": [
+            "prettier --write",
+            "git add"
+        ]
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.5.0",
+        "@typescript-eslint/parser": "^2.5.0",
+        "eslint": "^6.5.1",
+        "eslint-config-prettier": "^6.4.0",
+        "eslint-plugin-prettier": "^3.1.1",
+        "husky": "^3.0.9",
+        "lint-staged": "^9.4.2",
+        "prettier": "^1.18.2",
+        "typescript": "^3.6.4"
+    }
+}

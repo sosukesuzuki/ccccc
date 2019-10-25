@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "lib": ["esnext"],
+        "strict": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "rootDir": "./src",
+        "outDir": "build"
+    }
+}
