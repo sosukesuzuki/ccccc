@@ -7,17 +7,22 @@ import {
     TSParameterProperty,
 } from '@babel/types';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function printArray(arr: any[], parts: string[]): void {
+    for (let i = 0; i < arr.length; i++) {
+        const el = arr[i];
+        const shouldPrintCommma = i !== arr.length - 1;
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        parts.push(printNode(el) + (shouldPrintCommma ? ',' : ''));
+    }
+}
+
 function printFunctionParameters(
     params: Array<Identifier | Pattern | RestElement | TSParameterProperty>,
     parts: string[],
 ): void {
     parts.push('(');
-    for (let i = 0; i < params.length; i++) {
-        const prop = params[i];
-        const shouldPrintCommma = i !== params.length - 1;
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        parts.push(printNode(prop) + (shouldPrintCommma ? ',' : ''));
-    }
+    printArray(params, parts);
     parts.push(')');
 }
 
@@ -42,23 +47,13 @@ function printNode(node: Node): string {
         }
         case 'ArrayExpression': {
             parts.push('[');
-            for (let i = 0; i < node.elements.length; i++) {
-                const el = node.elements[i];
-                if (el) {
-                    const shouldPrintCommma = i !== node.elements.length - 1;
-                    parts.push(printNode(el) + (shouldPrintCommma ? ',' : ''));
-                }
-            }
+            printArray(node.elements, parts);
             parts.push(']');
             break;
         }
         case 'ObjectExpression': {
             parts.push('({');
-            for (let i = 0; i < node.properties.length; i++) {
-                const prop = node.properties[i];
-                const shouldPrintCommma = i !== node.properties.length - 1;
-                parts.push(printNode(prop) + (shouldPrintCommma ? ',' : ''));
-            }
+            printArray(node.properties, parts);
             parts.push('})');
             break;
         }
