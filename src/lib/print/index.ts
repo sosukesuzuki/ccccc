@@ -15,6 +15,22 @@ function printNode(node: Node): string {
             parts.push(printNode(node.expression));
             break;
         }
+        case 'ThisExpression': {
+            parts.push('this');
+            break;
+        }
+        case 'ArrayExpression': {
+            parts.push('[');
+            for (let i = 0; i < node.elements.length; i++) {
+                const el = node.elements[i];
+                if (el) {
+                    const shouldPrintCommma = i !== node.elements.length - 1;
+                    parts.push(printNode(el) + (shouldPrintCommma ? ',' : ''));
+                }
+            }
+            parts.push(']');
+            break;
+        }
         case 'LogicalExpression':
         case 'BinaryExpression': {
             parts.push(printNode(node.left));
