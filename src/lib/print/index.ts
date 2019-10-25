@@ -55,6 +55,48 @@ function printNode(node: Node): string {
             }
             break;
         }
+        case 'FunctionExpression':
+        case 'FunctionDeclaration': {
+            parts.push('(');
+
+            if (node.async) {
+                parts.push('async ');
+            }
+
+            parts.push('function');
+
+            if (node.generator) {
+                parts.push('* ');
+            } else {
+                parts.push(' ');
+            }
+
+            if (node.id) {
+                parts.push(printNode(node.id));
+            }
+
+            parts.push('(');
+
+            for (let i = 0; i < node.params.length; i++) {
+                const prop = node.params[i];
+                const shouldPrintCommma = i !== node.params.length - 1;
+                parts.push(printNode(prop) + (shouldPrintCommma ? ',' : ''));
+            }
+
+            parts.push(')');
+
+            parts.push(printNode(node.body));
+
+            parts.push(')');
+            break;
+        }
+        case 'BlockStatement': {
+            parts.push('{');
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
+            parts.push(print(node.body));
+            parts.push('}');
+            break;
+        }
         case 'LogicalExpression':
         case 'BinaryExpression': {
             parts.push(printNode(node.left));
