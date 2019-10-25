@@ -136,6 +136,9 @@ function printNode(node: Node): string {
             }
 
             printFunctionParameters(node.params, parts);
+
+            parts.push(printNode(node.body));
+
             break;
         }
         case 'LogicalExpression':
@@ -143,6 +146,13 @@ function printNode(node: Node): string {
             parts.push(printNode(node.left));
             parts.push(node.operator);
             parts.push(printNode(node.right));
+            break;
+        }
+        case 'AwaitExpression': {
+            parts.push('await');
+            parts.push('(');
+            parts.push(printNode(node.argument));
+            parts.push(')');
             break;
         }
         default: {
