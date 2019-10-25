@@ -1,6 +1,8 @@
 import { parse } from './lib/parse';
+import { print } from './lib/print';
 
 export function ccccc(source: string): string {
-    console.log(parse(source));
-    return source;
+    const parsed = parse(source);
+    const printed = print(parsed);
+    return printed;
 }
