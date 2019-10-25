@@ -79,10 +79,9 @@ function printNode(node: Node): string {
             }
             parts.push('function');
             if (node.generator) {
-                parts.push('* ');
-            } else {
-                parts.push(' ');
+                parts.push('*');
             }
+            parts.push(' ');
             if (node.id) {
                 parts.push(printNode(node.id));
             }
