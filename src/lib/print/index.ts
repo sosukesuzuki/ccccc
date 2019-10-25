@@ -42,7 +42,13 @@ function printNode(node: Node): string {
             break;
         }
         case 'ObjectProperty': {
+            if (node.computed) {
+                parts.push('[');
+            }
             parts.push(printNode(node.key));
+            if (node.computed) {
+                parts.push(']');
+            }
             if (
                 node.value.type !== 'Identifier' ||
                 node.key.name !== node.value.name
