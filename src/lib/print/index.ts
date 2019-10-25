@@ -31,6 +31,27 @@ function printNode(node: Node): string {
             parts.push(']');
             break;
         }
+        case 'ObjectExpression': {
+            parts.push('({');
+            for (let i = 0; i < node.properties.length; i++) {
+                const prop = node.properties[i];
+                const shouldPrintCommma = i !== node.properties.length - 1;
+                parts.push(printNode(prop) + (shouldPrintCommma ? ',' : ''));
+            }
+            parts.push('})');
+            break;
+        }
+        case 'ObjectProperty': {
+            parts.push(printNode(node.key));
+            if (
+                node.value.type !== 'Identifier' ||
+                node.key.name !== node.value.name
+            ) {
+                parts.push(':');
+                parts.push(printNode(node.value));
+            }
+            break;
+        }
         case 'LogicalExpression':
         case 'BinaryExpression': {
             parts.push(printNode(node.left));
