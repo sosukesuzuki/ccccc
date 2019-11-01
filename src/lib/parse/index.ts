@@ -1,6 +1,6 @@
 import { parse as parseWithBabel } from '@babel/parser';
-import { Statement } from '@babel/types';
+import { File } from '@babel/types';
 
-export function parse(source: string): Statement[] {
-    return parseWithBabel(source).program.body;
+export function parse(source: string): File {
+    return parseWithBabel(source);
 }
